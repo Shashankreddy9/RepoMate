@@ -1,4 +1,4 @@
-from github import Github
+from app.github_service import get_github_client
 
 
 def get_repository_files(repo_url: str):
@@ -8,7 +8,7 @@ def get_repository_files(repo_url: str):
 
     repo_path = repo_url.rstrip("/").split("github.com/")[-1]
 
-    github = Github()
+    github = get_github_client()
     repository = github.get_repo(repo_path)
 
     files = []

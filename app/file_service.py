@@ -1,4 +1,4 @@
-from github import Github
+from app.github_service import get_github_client
 
 
 def get_file_content(repo_url: str, file_path: str):
@@ -8,13 +8,15 @@ def get_file_content(repo_url: str, file_path: str):
 
     repo_path = repo_url.rstrip("/").split("github.com/")[-1]
 
-    github = Github()
+    github = get_github_client()
     repository = github.get_repo(repo_path)
 
     file = repository.get_contents(file_path)
 
     if isinstance(file, list):
-        raise ValueError("The provided path is a directory, not a file.")
+        raise ValueError(
+            "The provided path is a directory, not a file."
+        )
 
     content = file.decoded_content.decode("utf-8")
 

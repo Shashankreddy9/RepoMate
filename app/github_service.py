@@ -1,5 +1,24 @@
+import os
+
+from dotenv import load_dotenv
 from github import Github
 from github.GithubException import GithubException
+
+
+load_dotenv()
+
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
+
+def get_github_client():
+    """
+    Create an authenticated GitHub client.
+    """
+
+    if not GITHUB_TOKEN:
+        return Github()
+
+    return Github(GITHUB_TOKEN)
 
 
 def get_repository(repo_url: str):
@@ -10,7 +29,7 @@ def get_repository(repo_url: str):
     try:
         repo_path = repo_url.rstrip("/").split("github.com/")[-1]
 
-        github = Github()
+        github = get_github_client()
         repository = github.get_repo(repo_path)
 
         return {
